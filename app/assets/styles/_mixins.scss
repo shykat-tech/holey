@@ -1,0 +1,275 @@
+@use "variable" as *;
+@use "sass:math";
+
+// Detailed Explanation of the clamp-property Mixin
+// This mixin generates responsive values for a specified CSS property using clamp().
+// It takes into account both the standard design breakpoints and additional screen sizes:
+//   - Figma design width breakpoints: 390px for mobile and 1920px for desktop
+//   - Additional support for mini screens (320px to 395px) and large screens (1921px to 3840px)
+// The goal is to maintain visual consistency across various screen sizes using calculated values.
+//
+// Logic:
+// - For screens below 390px (mini screens), the clamp function adjusts by:
+//   - Reducing the minimum value by 20%
+//   - Increasing the maximum value by 50%
+// - This approach provides smooth scaling across devices and ensures a balanced layout adaptation.
+
+@mixin flex(
+  $justify: flex-start,
+  $align: stretch,
+  $wrap: nowrap,
+  $direction: null,
+  $gap: null
+) {
+  display: flex;
+  flex-direction: row;
+  justify-content: $justify;
+  align-items: $align;
+  flex-wrap: $wrap;
+
+  @if $direction != null {
+    flex-direction: $direction;
+  }
+
+  @if $gap != null {
+    gap: $gap;
+  }
+}
+
+@mixin size($width, $height) {
+  width: $width;
+  height: $height;
+}
+
+@mixin clamp-property(
+  $property,
+  $min-value,
+  $max-value,
+  $min-width-px: 389,
+  $max-width-px: 1920
+) {
+  // Constants
+  $pixels-per-rem: 16;
+
+  // Calculate rem values using math.div
+  $min-width: math.div($min-width-px, $pixels-per-rem);
+  $max-width: math.div($max-width-px, $pixels-per-rem);
+
+  // Calculate slope and y-axis intersection
+  $slope: math.div(($max-value - $min-value), ($max-width - $min-width));
+  $y-axis-intersection: -$min-width * $slope + $min-value;
+
+  // Generate the clamp function for the specified property
+  & {
+    #{$property}: clamp(
+      #{$min-value}rem,
+      #{$y-axis-intersection}rem + #{$slope * 100}vw,
+      #{$max-value}rem
+    );
+  }
+
+  // Media queries for mini screens
+  @media screen and (max-width: #{$min-width-px}px) {
+    $smaller-value: math.div($min-value * 80, 100);
+    $larger-value: $min-value;
+
+    $mini-screen-min-width: math.div(320, $pixels-per-rem);
+    $mini-screen-max-width: math.div(395, $pixels-per-rem);
+
+    $min-screen-slope: math.div(
+      ($larger-value - $smaller-value),
+      ($mini-screen-max-width - $mini-screen-min-width)
+    );
+
+    $min-screen-y-axis-intersection: -$mini-screen-min-width *
+      $min-screen-slope + $smaller-value;
+
+    & {
+      #{$property}: clamp(
+        #{$smaller-value}rem,
+        #{$min-screen-y-axis-intersection}rem + #{$min-screen-slope * 100}vw,
+        #{$larger-value}rem
+      );
+    }
+  }
+
+  $padding-properties: ("padding-inline", "padding-left", "padding-right");
+
+  @if not $property in $padding-properties {
+    @media (min-width: #{$max-width-px}px) {
+      $smaller-value: $max-value;
+      $larger-value: math.div($max-value * 150, 100);
+
+      $large-screen-min-width: math.div(1921, $pixels-per-rem);
+      $large-screen-max-width: math.div(3840, $pixels-per-rem);
+
+      $max-screen-slope: math.div(
+        ($larger-value - $smaller-value),
+        ($large-screen-max-width - $large-screen-min-width)
+      );
+
+      $max-screen-y-axis-intersection: -$large-screen-min-width *
+        $max-screen-slope + $smaller-value;
+
+      & {
+        #{$property}: clamp(
+          #{$smaller-value}rem,
+          #{$max-screen-y-axis-intersection}rem + #{$max-screen-slope * 100}vw,
+          #{$larger-value}rem
+        );
+      }
+    }
+  }
+}
+
+@mixin banglaFont {
+  body.page-bangla & {
+    @content;
+  }
+}
+
+@mixin mediaSm {
+  @media screen and (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin mediaMd {
+  @media screen and (max-width: 1024px) {
+    @content;
+  }
+}
+
+@mixin custom-media($min: null, $max: null) {
+  @if $min != null and $max != null {
+    @media screen and (min-width: #{$min}) and (max-width: #{$max}) {
+      @content;
+    }
+  } @else if $min != null {
+    @media screen and (min-width: #{$min}) {
+      @content;
+    }
+  } @else if $max != null {
+    @media screen and (max-width: #{$max}) {
+      @content;
+    }
+  } @else {
+    @media screen {
+      @content;
+    }
+  }
+}
+
+@mixin scale-responsive($screenScale) {
+  body.os-windows & {
+    @media screen and (-webkit-min-device-pixel-ratio: $screenScale) and (min-width: 766px) {
+      @content;
+    }
+  }
+}
+
+@mixin media1366px {
+  @media (min-width: 1366px) and (max-width: 1439px) {
+    @content;
+  }
+}
+
+@mixin richtext($base: 16px) {
+  font-size: $base;
+  line-height: 150%;
+
+  h1,
+  ::deep(h1) {
+    font-size: 2.5em; /* relative to $base */
+    margin: 1.6em 0 0.8em;
+    padding: 0;
+  }
+
+  h2,
+  :deep(h2) {
+    font-size: 2em;
+    margin: 1.4em 0 0.7em;
+    padding: 0;
+  }
+
+  h3,
+  :deep(h3) {
+    font-size: 1.5em;
+    margin: 1.2em 0 0.6em;
+    padding: 0;
+  }
+
+  h4,
+  :deep(h4) {
+    font-size: 1.25em;
+    margin: 1em 0 0.5em;
+    padding: 0;
+  }
+
+  p,
+  :deep(p) {
+    font-size: 1em;
+    margin: 0 0 1em;
+    padding: 0;
+  }
+
+  ul,
+  ol,
+  :deep(ul),
+  :deep(ol) {
+    margin: 0 0 1em 1.5em;
+    padding: 0;
+    ol {
+      list-style-type: lower-roman;
+      ol {
+        list-style-type: lower-alpha;
+      }
+    }
+  }
+
+  li,
+  :deep(li) {
+    margin-bottom: 0.5em;
+  }
+
+  a,
+  :deep(a) {
+    text-decoration: underline;
+
+    &:hover {
+      color: $primary-500;
+    }
+  }
+
+  blockquote,
+  :deep(blockquote) {
+    font-size: 1em;
+    margin: 1.5em 0;
+    padding-left: 1em;
+  }
+
+  table,
+  :deep(table) {
+    margin: 1.5em 0;
+    padding: 0;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: 0.5em 1em;
+    }
+  }
+}
+
+@mixin zoom($screenScale, $base-width: 1920px) {
+  $effective-width: math.div($base-width, $screenScale);
+
+  body.os-windows & {
+    @media screen and (-webkit-min-device-pixel-ratio: $screenScale),
+      screen and (min-resolution: ($screenScale * 96dpi)) {
+      @media (max-width: #{$effective-width}) {
+        @content;
+      }
+    }
+  }
+}
