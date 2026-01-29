@@ -1,7 +1,19 @@
 <template>
   <div class="featured">
-    <div class="smBox box"></div>
-    <div class="lgBox box"></div>
+    <div>
+      <div class="smBox box"></div>
+      <div class="desc">
+        <span>Baguette</span>
+        <span>Tk 300</span>
+      </div>
+    </div>
+    <div class="lgBox">
+      <div class="box"></div>
+      <div class="desc">
+        <span>Baguette</span>
+        <span>Tk 300</span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -14,12 +26,29 @@
 
   .box {
     width: 100%;
-    aspect-ratio: 29/32;
+    height: 46rem;
     background-color: $highlight;
   }
 
   .smBox {
-    grid-column: 2/4;
+    height: 32rem;
+  }
+  .lgBox {
+    grid-column: 2 /4;
+  }
+
+  .desc {
+    margin-top: 1rem;
+    @include flex(space-between, center);
+
+    span {
+      color: $text;
+      font-size: 1.25rem;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+      text-transform: capitalize;
+    }
   }
 }
 </style>
