@@ -21,8 +21,8 @@
 
 <style scoped lang="scss">
 header {
-  padding-top: 12.5rem;
-  padding-bottom: 7.5rem;
+  @include clamp-property("padding-top", 3, 12.5);
+  @include clamp-property("padding-bottom", 2.5, 7.5);
 }
 .separator {
   height: 0.0625rem;

@@ -20,21 +20,29 @@
 <style scoped lang="scss">
 .featured {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(1, 1fr);
   column-gap: 2rem;
   margin-bottom: 4rem;
 
+  @media screen and (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
   .box {
     width: 100%;
-    height: 46rem;
+    // height: 46rem;
     background-color: $highlight;
+
+    @include clamp-property("height", 12.5, 46);
   }
 
   .smBox {
-    height: 32rem;
+    @include clamp-property("height", 12.5, 32);
   }
   .lgBox {
-    grid-column: 2 /4;
+    @media screen and (min-width: 1024px) {
+      grid-column: 2 /4;
+    }
   }
 
   .desc {

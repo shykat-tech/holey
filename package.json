@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@nuxt/fonts": "0.11.4",
+    "@nuxt/image": "2.0.0",
     "gsap": "^3.14.2",
     "locomotive-scroll": "^4.1.4",
     "nuxt": "^4.3.0",

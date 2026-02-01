@@ -17,30 +17,30 @@
         </div>
 
         <div class="table-data">
-          <span>Baguette</span>
-          <span>
+          <span class="dish-title">Baguette</span>
+          <span class="dish-desc">
             Integer at imperdiet turpis integer tortor condimentum pellentesque.
           </span>
-          <span>Tk 350</span>
+          <span class="price">Tk 350</span>
         </div>
         <div class="table-data">
-          <span>Brioche</span>
-          <span>condimentum pellentesque.</span>
-          <span>Tk 350</span>
+          <span class="dish-title">Brioche</span>
+          <span class="dish-desc">condimentum pellentesque.</span>
+          <span class="price">Tk 350</span>
         </div>
         <div class="table-data">
-          <span>House White</span>
-          <span>Integer at imperdiet turpis integer tortor.</span>
-          <span>Tk 350</span>
+          <span class="dish-title">House White</span>
+          <span class="dish-desc"
+            >Integer at imperdiet turpis integer tortor.</span
+          >
+          <span class="price">Tk 350</span>
         </div>
         <div class="table-data">
-          <span>Sourdough</span>
-          <span></span>
-          <span>Tk 250</span>
+          <span class="dish-title">Sourdough</span>
+          <span class="price">Tk 250</span>
         </div>
       </div>
     </div>
-
     <div class="details-list">
       <h2 class="list-title">Bread</h2>
 
@@ -52,26 +52,27 @@
         </div>
 
         <div class="table-data">
-          <span>Baguette</span>
-          <span>
+          <span class="dish-title">Baguette</span>
+          <span class="dish-desc">
             Integer at imperdiet turpis integer tortor condimentum pellentesque.
           </span>
-          <span>Tk 350</span>
+          <span class="price">Tk 350</span>
         </div>
         <div class="table-data">
-          <span>Brioche</span>
-          <span>condimentum pellentesque.</span>
-          <span>Tk 350</span>
+          <span class="dish-title">Brioche</span>
+          <span class="dish-desc">condimentum pellentesque.</span>
+          <span class="price">Tk 350</span>
         </div>
         <div class="table-data">
-          <span>House White</span>
-          <span>Integer at imperdiet turpis integer tortor.</span>
-          <span>Tk 350</span>
+          <span class="dish-title">House White</span>
+          <span class="dish-desc"
+            >Integer at imperdiet turpis integer tortor.</span
+          >
+          <span class="price">Tk 350</span>
         </div>
         <div class="table-data">
-          <span>Sourdough</span>
-          <span></span>
-          <span>Tk 250</span>
+          <span class="dish-title">Sourdough</span>
+          <span class="price">Tk 250</span>
         </div>
       </div>
     </div>
@@ -84,74 +85,93 @@
 
   .menu-banner {
     width: 100%;
-    height: 30rem;
     background: $highlight;
     @include flex(center, center);
-    @include clamp-property("margin-bottom", 3, 10);
+    @include clamp-property("margin-bottom", 2, 10);
+    @include clamp-property("height", 12, 30);
 
     .title {
       color: $light;
       text-align: center;
       font-family: Cinzel;
-      font-size: 7rem;
       font-style: normal;
       font-weight: 500;
       line-height: 120%; /* 8.4rem */
       text-transform: uppercase;
-      width: 50%;
+
+      @include clamp-property("font-size", 2, 7);
+
+      @media screen and (min-width: 1024px) {
+        width: 50%;
+      }
     }
   }
   .details-list {
-    @include flex(space-between);
-    @include clamp-property("margin-bottom", 3, 10);
+    @include flex(space-between, start, nowrap, column);
+    @include clamp-property("margin-bottom", 2, 10);
+    @include clamp-property("gap", 2, 5);
+
+    @media screen and (min-width: 1024px) {
+      @include flex(space-between);
+    }
 
     &:last-child {
       margin-bottom: 0;
     }
-    gap: 5rem;
 
     .list-title {
       width: 28%;
       color: $primary;
       font-family: Cinzel;
-      font-size: 5rem;
       font-style: normal;
       font-weight: 500;
       line-height: 125%; /* 6.25rem */
       text-transform: uppercase;
+
+      @include clamp-property("font-size", 1.5, 5);
     }
 
     .list-table {
-      width: 72%;
       display: block;
+      width: 100%;
+      @media screen and (min-width: 1024px) {
+        width: 72%;
+      }
 
       .table-header,
       .table-data {
         display: block;
         width: 100%;
-        @include flex(space-between);
-        gap: 2.5rem;
+        @include flex(space-between, start, wrap);
         padding-bottom: 1rem;
         border-bottom: 0.0625rem solid $primary;
+        @include clamp-property("gap", 0.5, 2.5);
       }
 
       .table-header {
-        margin-bottom: 1.75rem;
+        @include clamp-property("margin-bottom", 1.5, 1.75);
       }
 
       .table-header span {
         color: $text;
-        font-size: 28px;
         font-style: normal;
         font-weight: 600;
         line-height: normal;
         text-transform: capitalize;
+        @include clamp-property("font-size", 1.125, 1.75);
 
         &:nth-child(1) {
-          width: 30%;
+          // flex: 1;
+          @media screen and (min-width: 1024px) {
+            width: 30%;
+          }
         }
         &:nth-child(2) {
-          flex: 1;
+          display: none;
+          @media screen and (min-width: 1024px) {
+            flex: 1;
+            display: inline-block;
+          }
         }
         &:nth-child(3) {
           text-align: end;
@@ -160,36 +180,55 @@
 
       .table-data {
         border: none;
-        padding-block: 1.75rem;
         border-bottom: 1px solid rgba(1, 67, 105, 0.07);
+
+        @include clamp-property("padding-block", 1, 1.75);
 
         &:last-child {
           border: none;
         }
 
-        span:nth-child(1),
-        span:nth-child(3) {
+        .dish-title,
+        .price {
           width: 30%;
           color: $text;
-          font-size: 1.25rem;
           font-style: normal;
           font-weight: 600;
           line-height: normal;
           text-transform: capitalize;
+          @include clamp-property("font-size", 1, 1.25);
         }
 
-        span:nth-child(3) {
+        .dish-title {
+          width: 80%;
+
+          @media screen and (min-width: 1024px) {
+            width: 30%;
+          }
+        }
+
+        .price {
+          text-align: end;
+        }
+
+        .price {
           width: auto;
         }
 
-        span:nth-child(2) {
-          flex: 1;
+        .dish-desc {
           color: $text;
           font-size: 1rem;
           font-style: normal;
           font-weight: 400;
           line-height: normal;
           text-transform: capitalize;
+          order: 1;
+          @include clamp-property("font-size", 0.875, 1);
+
+          @media screen and (min-width: 1024px) {
+            flex: 1;
+            order: 0;
+          }
         }
       }
     }

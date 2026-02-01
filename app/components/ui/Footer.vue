@@ -272,12 +272,24 @@ footer {
     position: absolute;
     left: 0;
     bottom: 100%;
+    width: 32px;
+    height: 32px;
+    @media screen and (min-width: 1024px) {
+      width: 64px;
+      height: 64px;
+    }
   }
 
   #top-right {
     position: absolute;
     right: 0;
     bottom: 100%;
+    width: 32px;
+    height: 32px;
+    @media screen and (min-width: 1024px) {
+      width: 64px;
+      height: 64px;
+    }
   }
 }
 </style>

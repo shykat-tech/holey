@@ -3,6 +3,37 @@ const emit = defineEmits<{
   (e: "close"): void;
 }>();
 
+import { onMounted, onBeforeUnmount, ref } from "vue";
+import gsap from "gsap";
+
+const sliderEl = ref<HTMLElement | null>(null);
+let tl: gsap.core.Tween | null = null;
+
+onMounted(() => {
+  if (!sliderEl.value) return;
+
+  const track = sliderEl.value.querySelector(".slider-track") as HTMLElement;
+
+  const images = track.children;
+  let totalHeight = 0;
+
+  // calculate total height
+  Array.from(images).forEach((img) => {
+    totalHeight += (img as HTMLElement).offsetHeight;
+  });
+
+  tl = gsap.to(track, {
+    y: `-${totalHeight / 2}`, // move half because we duplicated
+    duration: 30,
+    ease: "none",
+    repeat: -1,
+  });
+});
+
+onBeforeUnmount(() => {
+  tl?.kill();
+});
+
 const handleCloseMenu = () => {
   emit("close");
 };
@@ -164,7 +195,18 @@ const data = [
       </div>
     </div>
 
-    <div class="slider">SLider</div>
+    <div class="slider" ref="sliderEl">
+      <div class="slider-track">
+        <img src="/navbar/img1.jpg" />
+        <img src="/navbar/img2.jpg" />
+        <img src="/navbar/img3.png" />
+
+        <!-- duplicate for seamless loop -->
+        <img src="/navbar/img1.jpg" />
+        <img src="/navbar/img2.jpg" />
+        <img src="/navbar/img3.png" />
+      </div>
+    </div>
 
     <div class="close-area">
       <button @click="handleCloseMenu">
@@ -203,11 +245,9 @@ const data = [
 .menu {
   width: 100%;
   height: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: stretch;
   background: $light;
   overflow-y: auto;
+  @include flex(space-between, stretch);
 
   .menu-item {
     flex: 1;
@@ -292,6 +332,22 @@ const data = [
   .slider {
     width: 18%;
     padding-block: 5rem;
+    overflow: hidden;
+    position: relative;
+
+    .slider-track {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      will-change: transform;
+    }
+
+    img {
+      width: 100%;
+      aspect-ratio: 14 / 23;
+      object-fit: cover;
+      display: block;
+    }
   }
 
   .close-area {

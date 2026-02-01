@@ -15,13 +15,19 @@ const gridShape = computed(() => mapItems(pattern1));
 
 <template>
   <div class="grid">
-    <div v-for="p in gridShape" class="p">
-      <div>
-        <div class="box" :class="{ _blank: p === 'empty' }" />
-        <div v-if="p !== 'empty'" class="desc">
-          <span>Baguette</span>
-          <span>Tk 300</span>
-        </div>
+    <div v-for="p in gridShape" class="lg-items">
+      <div class="box" :class="{ _blank: p === 'empty' }" />
+      <div v-if="p !== 'empty'" class="desc">
+        <span>Baguette</span>
+        <span>Tk 300</span>
+      </div>
+    </div>
+
+    <div v-for="p in items" class="sm-items">
+      <div class="box" />
+      <div class="desc">
+        <span>Baguette</span>
+        <span>Tk 300</span>
       </div>
     </div>
   </div>
@@ -38,6 +44,22 @@ const gridShape = computed(() => mapItems(pattern1));
 
   @media screen and (min-width: 1024px) {
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  .lg-items {
+    display: none;
+
+    @media screen and (min-width: 1024px) {
+      display: block;
+    }
+  }
+
+  .sm-items {
+    display: block;
+
+    @media screen and (min-width: 1024px) {
+      display: none;
+    }
   }
 
   .box {

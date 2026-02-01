@@ -7,15 +7,15 @@
       />
     </header>
 
-    <!-- <UiMenuDetails />
-    <UiMenuDetails /> -->
+    <UiMenuDetails />
+    <!-- <UiMenuDetails /> -->
   </div>
 </template>
 
 <style scoped lang="scss">
 #homepage {
   header {
-    @include clamp-property("margin-bottom", 3, 10);
+    @include clamp-property("margin-bottom", 2.5, 10);
   }
 }
 </style>

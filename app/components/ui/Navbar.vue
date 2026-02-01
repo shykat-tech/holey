@@ -16,7 +16,7 @@ const handleCloseMenu = () => {
     <!-- Menu -->
     <Transition name="menu">
       <div v-if="isMenuOpen" class="menu-list">
-        <UiMenuList @close="handleCloseMenu" />
+        <LazyUiMenuList @close="handleCloseMenu" />
       </div>
     </Transition>
   </div>
@@ -24,12 +24,13 @@ const handleCloseMenu = () => {
 
 <style scoped lang="scss">
 nav {
-  @include clamp-property("padding-block", 1, 2.5);
+  @include clamp-property("padding-top", 1.5, 2.5);
+  @include clamp-property("padding-bottom", 1, 2.5);
   @include flex(space-between, center);
 
   .logo {
-    width: 180px;
     aspect-ratio: 90/43;
+    @include clamp-property("width", 7.5, 11.5);
   }
 
   .btn {
