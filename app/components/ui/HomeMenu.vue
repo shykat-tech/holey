@@ -7,8 +7,8 @@
       />
     </header>
 
-    <UiMenuDetails />
-    <UiMenuDetails />
+    <!-- <UiMenuDetails />
+    <UiMenuDetails /> -->
   </div>
 </template>
 

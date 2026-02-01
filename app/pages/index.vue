@@ -9,6 +9,7 @@
       for first time visitors or those looking for our best offerings."
       />
     </header>
+
     <BlocksFeatured />
     <UiMenuGrid />
 

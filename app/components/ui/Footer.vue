@@ -121,19 +121,35 @@ footer {
   position: relative;
 
   @include clamp-property("padding-block", 5, 8.5);
-  @include flex(space-between);
+  padding-bottom: 2.5rem;
 
-  gap: 5rem;
+  @include flex(space-between, start, nowrap, column);
+  @include clamp-property("gap", 2.5, 5);
+
+  @media screen and (min-width: 1024px) {
+    @include flex(space-between);
+  }
 
   .logo-area {
-    width: 28%;
+    width: 100%;
+    @media screen and (min-width: 1024px) {
+      width: 28%;
+    }
   }
 
   .contact-area {
-    width: 72%;
+    width: 100%;
+    @media screen and (min-width: 1024px) {
+      width: 72%;
+    }
 
     .contact-details {
-      @include flex(space-between);
+      @include flex(space-between, center, nowrap, column);
+      @include clamp-property("gap", 1.5, 3);
+
+      @media screen and (min-width: 1024px) {
+        @include flex(space-between);
+      }
 
       .address-phone {
         color: $text;
@@ -148,7 +164,10 @@ footer {
           }
 
           span {
-            width: 70%;
+            width: 100%;
+            @media screen and (min-width: 1024px) {
+              width: 70%;
+            }
             font-size: 17px;
             font-style: normal;
             font-weight: 450;
@@ -192,7 +211,7 @@ footer {
 
       .social-links {
         @include flex();
-        gap: 0.75rem;
+        @include clamp-property("gap", 1, 0.75);
 
         a {
           background: rgba(254, 249, 241, 1);
@@ -213,8 +232,13 @@ footer {
     }
 
     .footer-bottom {
-      margin-top: 5rem;
-      @include flex(space-between, center);
+      @include clamp-property("margin-top", 2.5, 5);
+      @include flex(center, center, nowrap, column);
+      @include clamp-property("gap", 1.25, 3);
+
+      @media screen and (min-width: 1024px) {
+        @include flex(space-between, center);
+      }
 
       span {
         color: $text;
