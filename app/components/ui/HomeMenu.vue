@@ -15,7 +15,7 @@
 <style scoped lang="scss">
 #homepage {
   header {
-    margin-bottom: 10rem;
+    @include clamp-property("margin-bottom", 3, 10);
   }
 }
 </style>

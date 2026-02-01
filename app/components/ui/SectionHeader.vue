@@ -30,10 +30,14 @@ defineProps<{
   color: $text;
   font-style: normal;
   font-weight: 400;
-  width: 30%;
-  margin-left: 55%;
   opacity: 0.85;
+  margin-top: 1rem;
 
   @include clamp-property("font-size", 1.25, 1.75);
+
+  @media screen and (min-width: 1024px) {
+    width: 30%;
+    margin: 0 0 0 55%;
+  }
 }
 </style>

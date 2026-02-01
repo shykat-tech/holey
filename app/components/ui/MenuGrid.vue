@@ -1,7 +1,6 @@
 <script setup lang="ts">
 const items = [1, 1, 1, 1, 1, 1, 1, 1, 1];
 const pattern1 = [1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1];
-const pattern2 = [1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1];
 
 const mapItems = (pattern: number[]) => {
   let idx = 0;
@@ -31,10 +30,15 @@ const gridShape = computed(() => mapItems(pattern1));
 <style scoped lang="scss">
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   justify-content: center;
-  column-gap: 2rem;
-  row-gap: 4rem;
+
+  @include clamp-property("column-gap", 1, 2);
+  @include clamp-property("row-gap", 1.5, 4);
+
+  @media screen and (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
 
   .box {
     width: 100%;

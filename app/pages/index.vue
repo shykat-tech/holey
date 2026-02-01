@@ -25,9 +25,10 @@ header {
   padding-bottom: 7.5rem;
 }
 .separator {
-  margin-block: 10rem;
   height: 0.0625rem;
   width: 100%;
   background: $highlight;
+
+  @include clamp-property("margin-block", 3, 10);
 }
 </style>
