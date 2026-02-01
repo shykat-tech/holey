@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="homepage">
     <header>
       <UiSectionHeader
         title="Menu"
@@ -8,11 +8,14 @@
     </header>
 
     <UiMenuDetails />
+    <UiMenuDetails />
   </div>
 </template>
 
 <style scoped lang="scss">
-header {
-  margin-bottom: 10rem;
+#homepage {
+  header {
+    margin-bottom: 10rem;
+  }
 }
 </style>
