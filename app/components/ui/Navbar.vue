@@ -4,11 +4,9 @@ const {$lenis} = useNuxtApp();
 
 const handleToggleMenu = () => {
   if (isMenuOpen.value) {
-    $lenis.start();
     isMenuOpen.value = false;
   } else {
     isMenuOpen.value = true;
-    $lenis.stop();
   }
 }
 </script>
