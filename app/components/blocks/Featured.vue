@@ -1,5 +1,5 @@
 <template>
-  <div class="featured">
+  <div class="featured" id="featuredSection">
     <div>
       <div class="smBox box"></div>
       <div class="desc">
@@ -39,6 +39,7 @@
   .smBox {
     @include clamp-property("height", 12.5, 32);
   }
+
   .lgBox {
     @media screen and (min-width: 1024px) {
       grid-column: 2 /4;

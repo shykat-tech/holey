@@ -89,29 +89,7 @@
       </div>
     </div>
 
-    <!-- Optional top left reverse border-radius illusion -->
-    <svg
-      id="top-left"
-      width="64"
-      height="64"
-      viewBox="0 0 100 100"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path d="M0 0C0 55.2285 44.7715 100 100 100H0V0Z" fill="white" />
-    </svg>
 
-    <!-- Optional top right reverse border-radius illusion -->
-    <svg
-      id="top-right"
-      width="64"
-      height="64"
-      viewBox="0 0 100 100"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path d="M100 0C100 55.2285 55.2285 100 0 100H100V0Z" fill="white" />
-    </svg>
   </footer>
 </template>
 
@@ -268,28 +246,5 @@ footer {
     }
   }
 
-  #top-left {
-    position: absolute;
-    left: 0;
-    bottom: 100%;
-    width: 32px;
-    height: 32px;
-    @media screen and (min-width: 1024px) {
-      width: 64px;
-      height: 64px;
-    }
-  }
-
-  #top-right {
-    position: absolute;
-    right: 0;
-    bottom: 100%;
-    width: 32px;
-    height: 32px;
-    @media screen and (min-width: 1024px) {
-      width: 64px;
-      height: 64px;
-    }
-  }
 }
 </style>

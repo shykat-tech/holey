@@ -1,22 +1,30 @@
 <script setup lang="ts">
 const isMenuOpen = ref(false);
-const handleCloseMenu = () => {
-  isMenuOpen.value = false;
-};
+const {$lenis} = useNuxtApp();
+
+const handleToggleMenu = () => {
+  if (isMenuOpen.value) {
+    $lenis.start();
+    isMenuOpen.value = false;
+  } else {
+    isMenuOpen.value = true;
+    $lenis.stop();
+  }
+}
 </script>
 
 <template>
   <div>
-    <nav class="body-container">
-      <button class="btn menu" @click="isMenuOpen = !isMenuOpen">Menu</button>
-      <img src="/holey_logo.svg" alt="holey logo" class="logo" />
+    <nav class="body-container" id="navbar">
+      <button class="btn menu" @click="handleToggleMenu">Menu</button>
+      <img src="/holey_logo.svg" alt="holey logo" class="logo"/>
       <button class="btn location">Location</button>
     </nav>
 
     <!-- Menu -->
     <Transition name="menu">
       <div v-if="isMenuOpen" class="menu-list">
-        <LazyUiMenuList @close="handleCloseMenu" />
+        <UiMenuList @close="handleToggleMenu"/>
       </div>
     </Transition>
   </div>
@@ -49,7 +57,7 @@ nav {
   inset: 0;
   z-index: 999;
   width: 100vw;
-  min-height: 100vh;
+  height: 100vh;
 }
 
 // Transitions

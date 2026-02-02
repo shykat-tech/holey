@@ -3,7 +3,7 @@ const emit = defineEmits<{
   (e: "close"): void;
 }>();
 
-import { onMounted, onBeforeUnmount, ref } from "vue";
+import {onBeforeUnmount, onMounted, ref} from "vue";
 import gsap from "gsap";
 
 const sliderEl = ref<HTMLElement | null>(null);
@@ -173,85 +173,101 @@ const data = [
 
 <template>
   <div class="menu">
-    <div class="menu-item body-container">
-      <h2 class="heading">Menu</h2>
-      <div class="item-wrapper">
-        <div
-          class="item-box"
-          v-for="(menu, idx) in data"
-          :key="'item-box' + idx"
-        >
-          <h3>{{ menu.title }}</h3>
-          <ul>
-            <li
-              v-for="(item, i) in menu.items"
-              class="link"
-              :key="'item-box' + idx + 'link' + i"
-            >
-              <NuxtLink to="#">{{ item.label }}</NuxtLink>
-            </li>
-          </ul>
+    <div class="__desktop-nav">
+      <div class="menu-item body-container">
+        <h2 class="heading">Menu</h2>
+        <div class="item-wrapper">
+          <div
+              class="item-box"
+              v-for="(menu, idx) in data"
+              :key="'item-box' + idx"
+          >
+            <h3>{{ menu.title }}</h3>
+            <ul>
+              <li
+                  v-for="(item, i) in menu.items"
+                  class="link"
+                  :key="'item-box' + idx + 'link' + i"
+              >
+                <NuxtLink to="#">{{ item.label }}</NuxtLink>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="slider" ref="sliderEl">
-      <div class="slider-track">
-        <img src="/navbar/img1.jpg" />
-        <img src="/navbar/img2.jpg" />
-        <img src="/navbar/img3.png" />
+      <div class="slider" ref="sliderEl">
+        <div class="slider-track">
+          <img src="/navbar/img1.jpg"/>
+          <img src="/navbar/img2.jpg"/>
+          <img src="/navbar/img3.png"/>
 
-        <!-- duplicate for seamless loop -->
-        <img src="/navbar/img1.jpg" />
-        <img src="/navbar/img2.jpg" />
-        <img src="/navbar/img3.png" />
+          <!-- duplicate for seamless loop -->
+          <img src="/navbar/img1.jpg"/>
+          <img src="/navbar/img2.jpg"/>
+          <img src="/navbar/img3.png"/>
+        </div>
+      </div>
+
+      <div class="close-area">
+        <button @click="handleCloseMenu">
+          <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="64"
+              height="64"
+              viewBox="0 0 64 64"
+              fill="none"
+          >
+            <path
+                d="M58.6673 31.9997C58.6673 17.2721 46.7281 5.33301 32.0006 5.33301C17.2731 5.33301 5.33398 17.2721 5.33398 31.9997C5.33398 46.7271 17.2731 58.6663 32.0006 58.6663C46.7281 58.6663 58.6673 46.7271 58.6673 31.9997Z"
+                stroke="#FEF9F1"
+                stroke-width="2.25"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+            <path
+                d="M39.9984 40L24 24M24.0017 40L40 24"
+                stroke="#FEF9F1"
+                stroke-width="2.25"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+
+        <span class="directional-text">
+        <span>Click to close</span>
+      </span>
       </div>
     </div>
 
-    <div class="close-area">
-      <button @click="handleCloseMenu">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="64"
-          height="64"
-          viewBox="0 0 64 64"
-          fill="none"
-        >
-          <path
-            d="M58.6673 31.9997C58.6673 17.2721 46.7281 5.33301 32.0006 5.33301C17.2731 5.33301 5.33398 17.2721 5.33398 31.9997C5.33398 46.7271 17.2731 58.6663 32.0006 58.6663C46.7281 58.6663 58.6673 46.7271 58.6673 31.9997Z"
-            stroke="#FEF9F1"
-            stroke-width="2.25"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-          <path
-            d="M39.9984 40L24 24M24.0017 40L40 24"
-            stroke="#FEF9F1"
-            stroke-width="2.25"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-      </button>
-
-      <span class="directional-text">
-        <span>Click to close</span>
-      </span>
-    </div>
+    <UiMobileNav @close="handleCloseMenu" :menuList="data"/>
   </div>
 </template>
 
 <style scoped lang="scss">
 .menu {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background: $light;
   overflow-y: auto;
-  @include flex(space-between, stretch);
+
+  @media screen and (min-width: 1024px) {
+    overflow: hidden;
+  }
+
+  .__desktop-nav {
+    display: none;
+
+    @media screen and (min-width: 1024px) {
+      display: block;
+      overflow-y: auto;
+      @include flex(space-between, stretch);
+    }
+  }
 
   .menu-item {
     flex: 1;
-    height: 100%;
 
     .heading {
       color: $primary;
@@ -266,24 +282,13 @@ const data = [
     }
 
     .item-wrapper {
-      display: flex;
-      flex-flow: column wrap;
-      row-gap: 4rem;
-      align-content: space-between;
-      /* Your container needs a fixed height, and it 
-   * needs to be taller than your tallest column. */
-      height: calc(100% - 290px);
-
-      &::before,
-      &::after {
-        content: "";
-        flex-basis: 100%;
-        width: 0;
-        order: 2;
-      }
+      column-count: 3;
+      column-gap: 5rem;
 
       .item-box {
-        width: 28%;
+        break-inside: avoid;
+        margin-bottom: 5rem;
+        height: max-content;
 
         h3 {
           color: $primary;
@@ -319,9 +324,11 @@ const data = [
         &:nth-child(3n + 1) {
           order: 1;
         }
+
         &:nth-child(3n + 2) {
           order: 2;
         }
+
         &:nth-child(3n) {
           order: 3;
         }
@@ -331,6 +338,7 @@ const data = [
 
   .slider {
     width: 18%;
+    height: 100vh;
     padding-block: 5rem;
     overflow: hidden;
     position: relative;
@@ -338,7 +346,7 @@ const data = [
     .slider-track {
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
+      gap: 0.75rem;
       will-change: transform;
     }
 
@@ -352,6 +360,7 @@ const data = [
 
   .close-area {
     width: 15%;
+    height: 100vh;
     background: $highlight;
     padding-block: 5rem;
     position: relative;
