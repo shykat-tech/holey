@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type {Category, SubCategory} from "~~/public/data";
+
 const emit = defineEmits<{
   (e: "close"): void;
 }>();
@@ -16,6 +18,9 @@ interface MenuGroup {
 const props = defineProps<{
   menuList: MenuGroup[];
 }>();
+
+
+const {result, pending} = useData("category")
 
 // track multiple open menus
 const openMenus = ref<Set<number>>(new Set());
@@ -54,12 +59,12 @@ const handleCloseMenu = () => {
     <!-- MENU LIST -->
     <ul class="menu-list__items">
       <li
-          v-for="(mList, i) in menuList"
+          v-for="(mList, i) in result as Category[]"
           :key="i"
           class="menu-item"
       >
         <button @click="toggleMenu(i)">
-          <span class="list__title">{{ mList.title }}</span>
+          <span class="list__title">{{ mList.value.name }}</span>
           <svg
               width="16"
               height="16"
@@ -79,9 +84,9 @@ const handleCloseMenu = () => {
 
         <Transition name="menu">
           <div v-if="openMenus.has(i)" class="sub-menu">
-            <li v-for="subMenu in mList.items" :key="subMenu.label">
-              <NuxtLink :to="subMenu.link" @click="handleCloseMenu">
-                {{ subMenu.label }}
+            <li v-for="subMenu in mList.value.subcategories as SubCategory[]" :key="subMenu.name">
+              <NuxtLink :to="'#'+subMenu.name.toLowerCase().split(' ').join('_')" @click="handleCloseMenu">
+                {{ subMenu.name.toLowerCase() }}
               </NuxtLink>
             </li>
           </div>
@@ -180,6 +185,7 @@ const handleCloseMenu = () => {
           padding-block: 0.75rem;
           padding-inline: 1.88rem;
           display: block;
+          text-transform: capitalize;
         }
       }
     }

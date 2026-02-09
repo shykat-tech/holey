@@ -1,17 +1,26 @@
+<script setup lang="ts">
+
+import type {FeatureItem} from "~~/public/data";
+
+const {result, pending} = useData("featured_items")
+const items = computed(() => result.value.slice(0, 2))
+</script>
+
 <template>
-  <div class="featured" id="featuredSection">
-    <div>
-      <div class="smBox box"></div>
+  <div v-if="pending">
+    Loading Featured items...
+  </div>
+  <div v-else class="featured" id="featuredSection">
+    <div
+        class="box"
+        :class="i===0 ? 'smBox' : 'lgBox'"
+        v-for="(box, i) in items as FeatureItem[]"
+        :key="i"
+    >
+      <img :src="`http://localhost:8000/${box?.value.image.url}`" :alt="box?.value.name">
       <div class="desc">
-        <span>Baguette</span>
-        <span>Tk 300</span>
-      </div>
-    </div>
-    <div class="lgBox">
-      <div class="box"></div>
-      <div class="desc">
-        <span>Baguette</span>
-        <span>Tk 300</span>
+        <span>{{ box?.value.name }}</span>
+        <span>Tk {{ box?.value.price }}</span>
       </div>
     </div>
   </div>
@@ -30,10 +39,27 @@
 
   .box {
     width: 100%;
-    // height: 46rem;
-    background-color: $highlight;
-
     @include clamp-property("height", 12.5, 46);
+
+    img {
+      width: 100%;
+      height: calc(100% - 28px);
+      object-fit: cover;
+    }
+
+    .desc {
+      margin-top: 1rem;
+      @include flex(space-between, center);
+
+      span {
+        color: $text;
+        font-size: 1.25rem;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        text-transform: capitalize;
+      }
+    }
   }
 
   .smBox {
@@ -46,18 +72,6 @@
     }
   }
 
-  .desc {
-    margin-top: 1rem;
-    @include flex(space-between, center);
 
-    span {
-      color: $text;
-      font-size: 1.25rem;
-      font-style: normal;
-      font-weight: 600;
-      line-height: normal;
-      text-transform: capitalize;
-    }
-  }
 }
 </style>

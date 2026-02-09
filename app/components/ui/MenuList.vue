@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import type {Category, SubCategory} from "~~/public/data";
+import {onBeforeUnmount, onMounted, ref} from "vue";
+import gsap from "gsap";
+
 const emit = defineEmits<{
   (e: "close"): void;
 }>();
-
-import {onBeforeUnmount, onMounted, ref} from "vue";
-import gsap from "gsap";
 
 const sliderEl = ref<HTMLElement | null>(null);
 let tl: gsap.core.Tween | null = null;
@@ -38,137 +39,9 @@ const handleCloseMenu = () => {
   emit("close");
 };
 
-const data = [
-  {
-    title: "Breads & Pantry",
-    items: [
-      {
-        label: "Breads",
-        link: "breads",
-      },
-      {
-        label: "Dairy",
-        link: "Dairy",
-      },
-      {
-        label: "Dips & Pate",
-        link: "Dips & Pate",
-      },
-      {
-        label: "Cold",
-        link: "Cold",
-      },
-      {
-        label: "Snacks & Serials",
-        link: "Snacks & Serials",
-      },
-    ],
-  },
-  {
-    title: "Brunch & Bagels",
-    items: [
-      {
-        label: "Breads",
-        link: "breads",
-      },
-      {
-        label: "Dairy",
-        link: "Dairy",
-      },
-      {
-        label: "Dips & Pate",
-        link: "Dips & Pate",
-      },
-    ],
-  },
-  {
-    title: "Desserts & Coffee",
-    items: [
-      {
-        label: "Breads",
-        link: "breads",
-      },
-      {
-        label: "Dairy",
-        link: "Dairy",
-      },
-      {
-        label: "Dips & Pate",
-        link: "Dips & Pate",
-      },
-      {
-        label: "Snacks & Serials",
-        link: "Snacks & Serials",
-      },
-    ],
-  },
-  {
-    title: "Pastries & Puffs",
-    items: [
-      {
-        label: "Breads",
-        link: "breads",
-      },
-      {
-        label: "Dairy",
-        link: "Dairy",
-      },
-      {
-        label: "Dips & Pate",
-        link: "Dips & Pate",
-      },
-      {
-        label: "Cold",
-        link: "Cold",
-      },
-      {
-        label: "Snacks & Serials",
-        link: "Snacks & Serials",
-      },
-    ],
-  },
-  {
-    title: "Bistro Kitchen",
-    items: [
-      {
-        label: "Breads",
-        link: "breads",
-      },
-      {
-        label: "Dairy",
-        link: "Dairy",
-      },
-      {
-        label: "Dips & Pate",
-        link: "Dips & Pate",
-      },
-      {
-        label: "Cold",
-        link: "Cold",
-      },
-      {
-        label: "Snacks & Serials",
-        link: "Snacks & Serials",
-      },
-      {
-        label: "Dairy",
-        link: "Dairy",
-      },
-      {
-        label: "Dips & Pate",
-        link: "Dips & Pate",
-      },
-      {
-        label: "Cold",
-        link: "Cold",
-      },
-      {
-        label: "Snacks & Serials",
-        link: "Snacks & Serials",
-      },
-    ],
-  },
-];
+const {result, pending} = useData("category")
+
+
 </script>
 
 <template>
@@ -176,20 +49,26 @@ const data = [
     <div class="__desktop-nav">
       <div class="menu-item body-container">
         <h2 class="heading">Menu</h2>
-        <div class="item-wrapper">
+        <div v-if="pending">
+          <span>Loading Menu Data...</span>
+        </div>
+        <div v-else class="item-wrapper">
           <div
               class="item-box"
-              v-for="(menu, idx) in data"
+              v-for="(menu, idx) in result as Category[]"
               :key="'item-box' + idx"
           >
-            <h3>{{ menu.title }}</h3>
+            <h3>{{ menu.value.name }}</h3>
             <ul>
               <li
-                  v-for="(item, i) in menu.items"
+                  v-for="(item, i) in menu.value.subcategories as SubCategory[]"
                   class="link"
                   :key="'item-box' + idx + 'link' + i"
               >
-                <NuxtLink to="#">{{ item.label }}</NuxtLink>
+                <NuxtLink @click="handleCloseMenu" :to="'#'+item.name.toLowerCase().split(' ').join('_')">{{
+                    item.name.toLowerCase()
+                  }}
+                </NuxtLink>
               </li>
             </ul>
           </div>
@@ -317,6 +196,12 @@ const data = [
               font-weight: 450;
               line-height: normal;
               text-decoration: none;
+              text-transform: capitalize;
+              transition: color 0.45s;
+
+              &:hover {
+                color: $primary;
+              }
             }
           }
         }

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const isMenuOpen = ref(false);
-const {$lenis} = useNuxtApp();
 
 const handleToggleMenu = () => {
   if (isMenuOpen.value) {
@@ -9,20 +8,27 @@ const handleToggleMenu = () => {
     isMenuOpen.value = true;
   }
 }
+
+const {result} = useData("footer")
 </script>
 
 <template>
   <div>
     <nav class="body-container" id="navbar">
-      <button class="btn menu" @click="handleToggleMenu">Menu</button>
+      <button class="btn btn-menu" @click="handleToggleMenu">Menu</button>
       <img src="/holey_logo.svg" alt="holey logo" class="logo"/>
-      <button class="btn location">Location</button>
+      <NuxtLink
+          :to="result.google_map"
+          target="_blank"
+      >
+        <button class="btn btn-location">Location</button>
+      </NuxtLink>
     </nav>
 
     <!-- Menu -->
     <Transition name="menu">
       <div v-if="isMenuOpen" class="menu-list">
-        <UiMenuList @close="handleToggleMenu"/>
+        <LazyUiMenuList @close="handleToggleMenu"/>
       </div>
     </Transition>
   </div>
@@ -43,8 +49,9 @@ nav {
     color: $highlight;
     font-style: normal;
     line-height: normal;
-    font-weight: 550;
+    font-weight: 600;
     text-transform: uppercase;
+    text-decoration: none;
 
     @include clamp-property("font-size", 0.875, 1);
   }
