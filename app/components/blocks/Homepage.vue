@@ -5,10 +5,9 @@ const {$gsap} = useNuxtApp()
 const headerRef = ref(null)
 
 const items = computed(() => result?.value.slice(2))
-const {result} = useData("featured_items")
-const {result: header} = useData("header")
+const {result, error} = useData("featured_items")
+const {result: header, error: headerError} = useData("header")
 
-console.log(items)
 
 onMounted(() => {
   const tl = $gsap.timeline()
@@ -34,7 +33,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="body-container">
+  <div v-if="headerError">
+    Error happened
+  </div>
+  <div v-else class="body-container">
     <header ref="headerRef">
       <UiSectionHeader
           :title="header.title"
